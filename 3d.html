@@ -1,0 +1,49 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>Document</title>
+</head>
+<style>
+/*距离div有800px焦距*/
+/*出现倾斜是因为有灭点即消失点
+任何物体的消失点  一定在场景的中心
+灭点是可以改变的*/
+
+body{
+	/*设置透视的距离*/
+	perspective:800px;
+	/*设置灭点的位置左上角*/
+	perspective-origin:0 0;
+}
+	.out{
+		width:200px;
+		height:200px;
+		background:red;
+		margin:auto;
+		transition:transform 1s linear;
+		/*默认中心轴是物体的中心的横线*/
+		transform-origin:top;
+		/*子元素将保留其 3D 位置。
+		不保留子元素3D位置   默认值是flat*/
+		transform-style:preserve-3d; 
+
+	}
+	.inner{
+		width:100px;
+		height:100px;
+		background:yellow;
+		/*transform-origin:left;*/
+		transform:rotateY(50deg);
+		backface-visibility:hidden; 
+	}
+	.out:hover{
+		transform:rotateX(-50deg);
+	}
+</style>
+<body>
+	<div class="out">
+		<div class="inner"></div>
+	</div>
+</body>
+</html>

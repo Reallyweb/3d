@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>3dbox</title>
+</head>
+<style>
+	.scene{
+		width:200px;
+		height:200px;
+		margin:auto;
+		position:fixed;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+		/*焦距*/
+		perspective:800px;
+		/*消失点的坐标*/
+		/*perspective-origin:300px 0;*/
+	}
+	.box{
+		width:200px;
+		height:200px;
+		border:1px solid #000;
+		position:relative;
+		/*transition:transform 1s linear;*/
+		/*确保子元素的属性存在*/
+		transform-style:preserve-3d; 
+		/*旋转中心*/
+		transform-origin:center center 100px;
+		/*transform-origin:center center center;*/
+
+	}
+	.son{
+		width:200px;
+		height:200px;
+		position:absolute;
+		text-align: center;
+		font-size: 30px;
+		font-weight: bold;
+		line-height:200px;
+	}
+	.son:nth-child(1){
+		transform-origin:top;
+		transform:rotateX(90deg);
+		background:red;
+	}
+	.son:nth-child(2){
+		transform-origin:left;
+		transform:rotateY(-90deg);
+		background:yellow;
+	}
+	.son:nth-child(3){
+		background:#888;
+		/*backface-visibility:hidden;*/
+		transform:rotateY(180deg);
+	}
+	.son:nth-child(4){
+		transform-origin:bottom;
+		transform:rotateX(-90deg);
+		background:blue;
+	}
+	.son:nth-child(5){
+		transform-origin:right;
+		transform:rotateY(90deg);
+		background:green;
+	}
+	.son:nth-child(6){
+		background:pink;
+		/*直接沿z轴平移*/
+		transform:translateZ(200px);
+	}
+</style>
+<script>
+	window.onload=function(){
+		var box=document.querySelector(".box");
+		// 获取浏览器的宽高
+		var clientW=document.documentElement.clientWidth;
+		var clientH=document.documentElement.clientHeight;
+		//var arr=[];
+		function arrs(){
+			this.arr=[];
+		}
+		var ss=new arrs();
+		document.onmousedown=function(e){
+			// 获取鼠标按下是距离浏览器的距离
+			// console.log(this);
+			var	 cx=e.clientX;
+			var	 cy=e.clientY;
+			document.onmousemove=function(e){
+				// 获取移动后距离浏览器的距离
+				var newcx=e.clientX;
+			 	var newcy=e.clientY;
+			 	// x,y是为了确定鼠标的坐标
+			 	var  x=newcx-clientW/2;
+			 	ss.arr.push(x);
+				var  y=newcy-clientH/2;
+				ss.arr.push(y);
+				// 鼠标按下时移动的距离即box旋转的度数
+			 	var leng=Math.sqrt((newcx-cx)*(newcx-cx)+(newcy-cy)*(newcy-cy));
+			 	ss.arr.push(leng);
+			 	
+			 	// 画坐标理解
+			 	// 鼠标移动的方向就是旋转轴
+			 	// box.style.transform="rotate3d("+x+","+y+",0,"+leng+"deg)";
+			 	// box朝鼠标移动的方向旋转
+			 	box.style.transform="rotate3d("+(-y)+","+x+",0,"+leng+"deg)";
+			 }
+			 
+			 document.onmouseup=function(){
+			 	// 清空事件
+			 		document.onmousemove=null; 
+			 		document.onmouseup=null; 
+			 	}
+		}
+		setTimeout(function(){
+			console.log(ss.arr);
+		},0)
+		
+		// var a=arr[length-3];
+		// var b=arr[length-2];
+		// var c=arr[length-1];
+		// console.log(a,b,c)
+	}
+</script>
+<body>
+	<div class="scene">
+		<div class="box">
+			<div class="son">1</div>
+			<div class="son">2</div>
+			<div class="son">3</div>
+			<div class="son">4</div>
+			<div class="son">5</div>
+			<div class="son">6</div>
+		</div>
+	</div>
+</body>
+</html>
